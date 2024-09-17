@@ -1,0 +1,78 @@
+﻿@page
+@model DmacaspacPrelim.Pages.IndexModel
+@{
+    ViewData["Title"] = "Banking System with Account Management";
+}
+
+<h1>Bank Account Management</h1>
+
+<h3>Add New Account</h3>
+<form method="post">
+    <label for="NewAccountNumber">Account Number:</label>
+    <input asp-for="NewAccountNumber" id="NewAccountNumber" required /><br />
+    <label for="NewHolderName">Holder Name:</label>
+    <input asp-for="NewHolderName" id="NewHolderName" required /><br />
+    <label for="NewBalance">Initial Balance:</label>
+    <input asp-for="NewBalance" id="NewBalance" type="number" min="0" required /><br />
+    <button type="submit">Add Account</button>
+</form>
+
+<hr />
+
+<h3>Deposit Funds</h3>
+<form method="post">
+    <input type="hidden" name="SelectedAction" value="deposit" />
+    <label for="holderNameDeposit">Holder Name:</label>
+    <input asp-for="HolderName" id="holderNameDeposit" /><br />
+    <label for="amountDeposit">Enter amount to deposit:</label>
+    <input asp-for="Amount" id="amountDeposit" type="number" min="1" required /><br />
+    <button type="submit">Deposit</button>
+</form>
+
+<hr />
+
+<h3>Withdraw Funds</h3>
+<form method="post">
+    <input type="hidden" name="SelectedAction" value="withdraw" />
+    <label for="holderNameWithdraw">Holder Name:</label>
+    <input asp-for="HolderName" id="holderNameWithdraw" /><br />
+    <label for="amountWithdraw">Enter amount to withdraw:</label>
+    <input asp-for="Amount" id="amountWithdraw" type="number" min="1" required /><br />
+    <button type="submit">Withdraw</button>
+</form>
+
+<hr />
+
+<h2>Account Information</h2>
+
+@if (Model.Accounts.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Holder Name</th>
+                <th>Current Balance (₱)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.Accounts)
+            {
+                <tr>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.HolderName</td>
+                    <td>@account.CurrentBalance.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No accounts found.</p>
+}
+
+@if (Model.Message != null)
+{
+    <p>@Model.Message</p>
+}
